@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Image, View } from 'react-native';
 
 
 import React, {useEffect, useState} from "react";
@@ -16,6 +16,12 @@ import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { LogBox } from 'react-native';
+
+import ItemsIcon from "./assets/ItemsIcon.png";
+import MarketIcon from "./assets/MarketIcon.png";
+import CameraIcon from "./assets/CameraIcon.png";
+
+
 // Ignore log notification by message:
 LogBox.ignoreLogs(['Warning: ...']);
 
@@ -54,13 +60,27 @@ export default function App() {
       <View style={styles.main}> 
       <NavigationContainer> 
         <Tab.Navigator
-          screenOptions={{
-            tabBarStyle:  { height: 100 }
+          
+          screenOptions={({ route }) => ({
+            tabBarIcon: () => {
+              if (route.name === "Items") {
+                return <Image style={{borderRadius: 20, width: 40, height: 40}} source={ItemsIcon}></Image>
+              } else if (route.name === "Scan") {
+                return <Image style={{ width: 40, height: 40}} source={CameraIcon}></Image>
+              } else {
+                return <Image style={{borderRadius: 20, width: 40, height: 40}} source={MarketIcon}></Image>
+              }
 
-          }}
+            },
+            tabBarActiveTintColor: 'tomato',
+            tabBarInactiveTintColor: 'gray',
+            tabBarStyle:{height: 100},    
+
+          })}
+      
         >
-          <Tab.Screen name="Calendar" component={Calendar} />
-          <Tab.Screen name="Camera">
+          <Tab.Screen name="Items" component={Calendar} />
+          <Tab.Screen name="Scan">
             {(props) => <Cam {...props} net={net} />}
           </Tab.Screen>
           <Tab.Screen name="Market" component={Calendar}/>
