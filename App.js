@@ -60,7 +60,7 @@ export default function App() {
       <View style={styles.main}> 
       <NavigationContainer> 
         <Tab.Navigator
-          
+          initialRouteName={"Scan"}
           screenOptions={({ route }) => ({
             tabBarIcon: () => {
               if (route.name === "Items") {

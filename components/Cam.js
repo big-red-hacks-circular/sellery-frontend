@@ -8,6 +8,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Buffer } from 'buffer'
 import * as ImageManipulator from 'expo-image-manipulator';
 
+import axios from "axios";
+
 const TensorCamera = cameraWithTensors(Camera);
 
 export default function Cam(props) {
@@ -38,14 +40,14 @@ export default function Cam(props) {
     const [interpolatedBbox, setInterpolatedBbox] = useState([])
 
 
-    const fps = 60;
+    const fps = 40;
     
     const handleCameraStream =(imageTensors) => {
         let counter = 0;
         let numPredict = 0;
         let prevBbox = []
         let currBbox = []
-        let detectionFrequency = 8
+        let detectionFrequency = 10
         const loop = async () => {
             counter += 1
             if(net) {
@@ -89,8 +91,6 @@ export default function Cam(props) {
                             } else {
                                 setInterpolatedBbox([start[0] + x, start[1] + y, start[2] + width,  start[3] + height])
                             }
-                        
-                        
                     }                    
                 
             }
@@ -129,6 +129,8 @@ export default function Cam(props) {
 
     const [loading, setLoading] = useState(false)
 
+    const [successMessage, setSuccessMessage] = useState("")
+
     const handleItemScan = async () => {
         setLoading(true)
         if (cameraRef) {
@@ -140,15 +142,32 @@ export default function Cam(props) {
                     originX: (predictions[0].bbox[0] * 2376) / 152,
                     originY: (predictions[0].bbox[1] * 4042) / 200, 
                     width: (predictions[0].bbox[2] * 2376) / 152,
-                })}],
+                })}]
+            )
+
+            const resized = await ImageManipulator.manipulateAsync(
+                result.uri,
+                [{resize: {width: result.width / 2, height: result.height / 2}}],
                 {base64:true}
             )
             
-            const base64 = result.base64
-
+            const base64 = resized.base64
+            let response = await axios.post("http://13.59.189.111:8000/food/", {base64_image: base64})
+            if (response?.data?.success) {
+                console.log(response.data)
+                if (response.data.data.name === "cooking plantain" || response.data.data.name === "Saba" || response.data.data.name === "saba banana") {
+                    response.data.data.name = "Banana"
+                }
+                setSuccessMessage(`${response?.data?.data?.name} has been successfully added`)
+            }
+            
+          
         }
 
         setLoading(false)
+        setTimeout(() => {
+            setSuccessMessage("")
+        }, 3000)
         
     }
 
@@ -157,6 +176,7 @@ export default function Cam(props) {
 
             <View style={styles.cameraContainer}>
                 {loading && <ActivityIndicator style={{zIndex: 100, position: "absolute", top: 10, left: 20}} size="large" color="#ffffff" />}
+                {successMessage && <Text style={{color: "white", fontSize: 20, zIndex: 100, position: "absolute", top: 10, left: 30}}> {successMessage} </Text>}
                 {/* {imageUri && <Image style={{zIndex: 100, width:300, height:300, flex:1, position: "absolute", top: 10, left: 20}} source={{ uri: `data:image/jpg;base64, ${imageUri}` }} />} */}
 
                 {interpolatedBbox.length > 0 &&    
@@ -173,9 +193,6 @@ export default function Cam(props) {
                             height: transferCoord(interpolatedBbox[3], 'top'), 
                             // backgroundColor: "rgba(255, 0, 0, 0.4)",
                         }}> 
-                        <Text>
-                            {predictions[0].class}
-                        </Text>
                     </View>
                     </TouchableWithoutFeedback>
                 }
