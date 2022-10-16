@@ -15,7 +15,12 @@ import * as cocoSsd from '@tensorflow-models/coco-ssd';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { LogBox } from 'react-native';
+// Ignore log notification by message:
+LogBox.ignoreLogs(['Warning: ...']);
 
+// Ignore all log notifications:
+LogBox.ignoreAllLogs();
 
 
 const initialiseTensorflow = async () => {
@@ -26,6 +31,7 @@ const initialiseTensorflow = async () => {
 
 
 export default function App() {
+  
   const [tab, setTab] = useState("calendar");
   const [net, setNet] = useState(null);
 
@@ -47,7 +53,12 @@ export default function App() {
       :
       <View style={styles.main}> 
       <NavigationContainer> 
-        <Tab.Navigator>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarStyle:  { height: 100 }
+
+          }}
+        >
           <Tab.Screen name="Calendar" component={Calendar} />
           <Tab.Screen name="Camera">
             {(props) => <Cam {...props} net={net} />}

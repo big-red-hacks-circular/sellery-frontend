@@ -7,7 +7,7 @@ export default function StartupScreen(props) {
     return (
         <View style={styles.container}>
             <Text style={{color: "red"}}> 
-                Calendar...
+                Items
             </Text>
         </View>
     )

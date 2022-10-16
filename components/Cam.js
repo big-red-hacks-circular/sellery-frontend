@@ -4,13 +4,11 @@ import { cameraWithTensors } from '@tensorflow/tfjs-react-native';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet,Platform, View, Text, Dimensions} from 'react-native';
 import { Camera } from 'expo-camera';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const TensorCamera = cameraWithTensors(Camera);
 
 export default function Cam(props) {
-    const headerHeight = useHeaderHeight();
-
 
     const {net, ...rest} = props
     const windowWidth = Dimensions.get('window').width;
@@ -30,6 +28,7 @@ export default function Cam(props) {
     if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
     }
+    const fps = 5;
 
     const handleCameraStream =(imageTensors) => {
         
@@ -42,7 +41,9 @@ export default function Cam(props) {
                tf.dispose([nextImageTensor]);
              }
            }
+           setTimeout(() => {
             requestAnimationFrame(loop);
+           },1000 / fps)
         }
         loop();
     }
@@ -56,40 +57,39 @@ export default function Cam(props) {
         height: 1200,
         width: 1600,
         };
+    const insets = useSafeAreaInsets();
 
     const transferCoord = (c, type) => {
         let val;
         if (type === "left") {
             val = (c * windowWidth) / 152
         } else {
-            val = (c * windowHeight) / 200
+            val = (c * (windowHeight - 100 - insets.top - insets.bottom ) ) / 200
         }
         return val
         
     }
-    console.log('predictions', predictions)
-
 
     return (
         <View style={{ flex: 1}}>
 
             <View style={styles.cameraContainer}>
             {predictions.length > 0 &&            
-                predictions.map( (prediction, i) => ( 
+                // predictions.map( (prediction, i) => ( 
                     <View style={{
                         zIndex: 100, 
-                        top: transferCoord(prediction.bbox[1], 'top'), 
-                        left: transferCoord(prediction.bbox[0], 'left'), 
+                        top: transferCoord(predictions[0].bbox[1], 'top'), 
+                        left: transferCoord(predictions[0].bbox[0], 'left'), 
                         position:"absolute", 
-                        width: prediction.bbox[2],
-                        height: prediction.bbox[3], 
+                        width:  transferCoord(predictions[0].bbox[2], 'left'),
+                        height: transferCoord(predictions[0].bbox[3], 'right'), 
                         backgroundColor: "rgba(255, 0, 0, 0.4)",
                     }}> 
                     <Text>
                         {predictions[0].class}
                     </Text>
                     </View>
-                ))
+                // ))
             }
 
             <TensorCamera 
