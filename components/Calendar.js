@@ -4,8 +4,12 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, ScrollView} from 'react-native';
 import cookie from '../assets/cookie.jpeg';
 import banana from "../assets/banana.jpeg";
-import kellogs from "../assets/kelloggs.jpeg";
+import cheerios from "../assets/cheerios.jpeg";
 import clementine from "../assets/clementine.jpeg";
+import peach from "../assets/peach.png";
+import kellogs from "../assets/kelloggs.jpeg";
+
+
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function StartupScreen() {
@@ -24,19 +28,19 @@ export default function StartupScreen() {
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 <View style={styles.card}> 
                     <Text style={{marginBottom: 10, fontWeight: "600"}}>
-                        Cookie
+                        Peach
                     </Text>
-                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={cookie}></Image>
+                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={peach}></Image>
                     <View style={{marginTop: 10,display:"flex", flexDirection: "row"}}> 
                         <Text style={{marginRight:4, fontWeight: "600"}}>
                             Expires in:
                         </Text>
                         <Text style={{color: "red"}}>
-                            10 days
+                            5 days
                         </Text>
                     </View>
                     <Text>
-                        Fridge
+                        Pantry
                     </Text>
                     
                 </View>
@@ -61,9 +65,9 @@ export default function StartupScreen() {
                 </View>
                 <View style={styles.card}>
                     <Text style={{marginBottom: 10, fontWeight: "600"}}>
-                        Kellogs
+                        Cheerios
                     </Text> 
-                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={kellogs}></Image>
+                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={cheerios}></Image>
                     <View style={{marginTop: 10,display:"flex", flexDirection: "row"}}> 
                         <Text style={{marginRight:4, fontWeight: "600"}}>
                             Expires in:
@@ -87,7 +91,7 @@ export default function StartupScreen() {
                             Expires in:
                         </Text>
                         <Text style={{color: "red"}}>
-                            7 days
+                            4 days
                         </Text>
                         
                     </View>
@@ -105,7 +109,44 @@ export default function StartupScreen() {
             </View>
 
             <View style={styles.gridView}> 
-            <View style={styles.card}> 
+                <View style={styles.card}>
+                    <Text style={{marginBottom: 10, fontWeight: "600"}}>
+                        Banana
+                    </Text> 
+                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={banana}></Image>
+                    <View style={{marginTop: 10,display:"flex", flexDirection: "row"}}> 
+                        <Text style={{marginRight:4, fontWeight: "600"}}>
+                            Expires in:
+                        </Text>
+                        <Text style={{color: "red"}}>
+                            3 days
+                        </Text>
+                        
+                    </View>
+                    <Text>
+                        Pantry
+                    </Text>
+                </View>
+
+                <View style={styles.card}>
+                    <Text style={{marginBottom: 10, fontWeight: "600"}}>
+                        Clementine
+                    </Text> 
+                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={clementine}></Image>
+                    <View style={{marginTop: 10,display:"flex", flexDirection: "row"}}> 
+                        <Text style={{marginRight:4, fontWeight: "600"}}>
+                            Expires in:
+                        </Text>
+                        <Text style={{color: "red"}}>
+                            4 days
+                        </Text>
+                        
+                    </View>
+                    <Text>
+                        Pantry
+                    </Text>
+                </View>
+                <View style={styles.card}> 
                     <Text style={{marginBottom: 10, fontWeight: "600"}}>
                         Cookie
                     </Text>
@@ -123,18 +164,17 @@ export default function StartupScreen() {
                     </Text>
                     
                 </View>
-
                 <View style={styles.card}>
                     <Text style={{marginBottom: 10, fontWeight: "600"}}>
-                        Banana
+                        Cheerios
                     </Text> 
-                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={banana}></Image>
+                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={cheerios}></Image>
                     <View style={{marginTop: 10,display:"flex", flexDirection: "row"}}> 
                         <Text style={{marginRight:4, fontWeight: "600"}}>
                             Expires in:
                         </Text>
                         <Text style={{color: "red"}}>
-                            3 days
+                            2 years
                         </Text>
                         
                     </View>
@@ -160,24 +200,7 @@ export default function StartupScreen() {
                         Pantry
                     </Text>
                 </View>
-                <View style={styles.card}>
-                    <Text style={{marginBottom: 10, fontWeight: "600"}}>
-                        Clementine
-                    </Text> 
-                    <Image style={{borderRadius: 20, width: 120, height: 120}} source={clementine}></Image>
-                    <View style={{marginTop: 10,display:"flex", flexDirection: "row"}}> 
-                        <Text style={{marginRight:4, fontWeight: "600"}}>
-                            Expires in:
-                        </Text>
-                        <Text style={{color: "red"}}>
-                            7 days
-                        </Text>
-                        
-                    </View>
-                    <Text>
-                        Pantry
-                    </Text>
-                </View>
+
             </View>
             
         </ScrollView>
